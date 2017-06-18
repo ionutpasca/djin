@@ -1,5 +1,6 @@
 'use strict'
 
+const _ = require('lodash')
 const Cache = require('../cache/cache')
 const Error = require('../common/error')
 const MySqlConnection = require('./connection')
@@ -17,11 +18,11 @@ class DjinWorker {
 	}
 
 	async initialize() {
-		this.connectionPool = await this.mySqlClient.createConnectionPool()
-		this.cachedData = await Cache.initialize()
-		this.schemaProvider = new SchemaProvider(this.mySqlClient.database)
-
 		try {
+			this.connectionPool = await this.mySqlClient.createConnectionPool()
+			this.cachedData = await Cache.initialize()
+			this.schemaProvider = new SchemaProvider(this.mySqlClient.database)
+
 			const connection = await this.mySqlClient.getConnection()
 			this.schemaWasUpdatedOnRestart = await this.schemaProvider.syncDatabaseStructure(connection)
 
@@ -32,13 +33,16 @@ class DjinWorker {
 		}
 	}
 
-	getShortestPathBetweenTables(fromTable, toTable) {
-		if(!this.pathGenerator) {
+	getShortestPathBetweenTables(fromTable, toTable, ignoreFirst) {
+		if (!this.pathGenerator) {
 			throw Error.UNINITIALIZED_PATH_GENERATOR
 		}
-		return this.pathGenerator.generatePath(fromTable, toTable)
+		let path = this.pathGenerator.generatePath(fromTable, toTable)
+		if(ignoreFirst) {
+			return _.tail(path)
+		}
+		return path
 	}
-
 }
 
 module.exports = DjinWorker

@@ -3,8 +3,8 @@
 const _ = require('lodash')
 const Cache = require('../../cache/cache')
 const Utils = require('../../common/utils')
-const QueryExecuter = require('../queryExecuter')
-const QueryProvider = require('./queryProvider')
+const QueryExecuter = require('../query/queryExecuter')
+const QueryProvider = require('../query/queryProvider')
 
 class SchemaProvider {
 	constructor(database) {

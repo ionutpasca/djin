@@ -5,6 +5,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+.vscode
+
+./src/cache/cache.json
+
 # Runtime data
 pids
 *.pid
