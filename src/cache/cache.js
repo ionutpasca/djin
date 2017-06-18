@@ -23,6 +23,24 @@ class Cache {
 		return this.MemoryCacher.get(key)
 	}
 
+	static getDeep(keyList) {
+		if (!keyList.length) {
+			return null
+		}
+		if (keyList.length === 1) {
+			return this.MemoryCacher.get(keyList[0])
+		}
+
+		let baseValue = this.MemoryCacher.get(keyList[0])
+		if(!baseValue) {
+			return null
+		}
+		for (let i = 1; i < keyList.length; i++) {
+			baseValue = baseValue[keyList[i]]
+		}
+		return baseValue
+	}
+
 	static async set(key, value) {
 		if (!key && key !== 0) {
 			throw Error.CACHE_KEY_CANNOT_BE_NULL

@@ -3,9 +3,7 @@
 const _ = require('lodash')
 const Utils = require('../common/utils')
 const Error = require('../common/error')
-
-const KEYVALUES = ['select', 'where']
-const SELECTALL = '*'
+const Constants = require('../common/constants')
 
 class Analyzer {
 	constructor(jsonTree) {
@@ -45,10 +43,10 @@ class Analyzer {
 				return;
 			}
 
-			Object.assign(selector, { select: keyValue.select ? keyValue.select : SELECTALL })
+			Object.assign(selector, { select: keyValue.select ? keyValue.select : Constants.SELECTALL })
 			this.selectors.push(selector);
 
-			const childKeys = Utils.removeStringsFromArray(Object.keys(keyValue), KEYVALUES)
+			const childKeys = Utils.removeStringsFromArray(Object.keys(keyValue), Constants.KEYVALUES)
 			childKeys.forEach(childKey => {
 				let newTree = {}
 				newTree[childKey] = keyValue[childKey]

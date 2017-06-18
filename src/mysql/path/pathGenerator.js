@@ -2,6 +2,7 @@
 
 const _ = require('lodash')
 const BFS = require('./BFS')
+const Cache = require('../../cache/cache')
 
 class PathGenerator {
 	constructor(foreignKeys) {
@@ -9,16 +10,23 @@ class PathGenerator {
 		this.bfs = new BFS(this.foreignKeys)
 	}
 
-	generatePath(fromTable, toTable) {
+	async generatePath(fromTable, toTable) {
 		if (!this.foreignKeys.length) {
 			return null
 		}
-
-		const path = this.findBasicPathFromForeignKeys(fromTable, toTable)
-		if (path) {
+		let path = Cache.getDeep(['databasePaths', `${fromTable}.${toTable}`])
+		if(path) {
 			return path
 		}
-		return this.bfs.findShortestPathBetweenTables(fromTable, toTable)
+
+		path = this.findBasicPathFromForeignKeys(fromTable, toTable)
+		if (!path) {
+			path = this.bfs.findShortestPathBetweenTables(fromTable, toTable)
+		}
+		if(path) {
+			await this.savePathInCache(path, fromTable, toTable)
+			return path
+		}
 	}
 
 	findBasicPathFromForeignKeys(fromTable, toTable) {
@@ -26,6 +34,16 @@ class PathGenerator {
 			return ((key.from === fromTable && key.to === toTable) ||
 				(key.from === toTable && key.to === fromTable))
 		})
+	}
+
+	async savePathInCache(path, fromTable, toTable) {
+		let currentSavedPaths = Cache.get('databasePaths')
+		if (!currentSavedPaths) {
+			currentSavedPaths = {}
+		}
+		const newPathKey = `${fromTable}.${toTable}`
+		currentSavedPaths[newPathKey] = path
+		await Cache.set('databasePaths', currentSavedPaths)
 	}
 
 }

@@ -7,7 +7,7 @@ const MySqlConnection = require('./connection')
 const SchemaProvider = require('./schema/schemaProvider')
 const PathGenerator = require('./path/pathGenerator')
 
-class DjinWorker {
+class MySqlWorker {
 	constructor(host, user, password, database) {
 		this.mySqlClient = new MySqlConnection(host, user, password, database)
 
@@ -33,16 +33,18 @@ class DjinWorker {
 		}
 	}
 
-	getShortestPathBetweenTables(fromTable, toTable, ignoreFirst) {
+	async getShortestPathBetweenTables(fromTable, toTable, ignoreFirst) {
 		if (!this.pathGenerator) {
 			throw Error.UNINITIALIZED_PATH_GENERATOR
 		}
-		let path = this.pathGenerator.generatePath(fromTable, toTable)
-		if(ignoreFirst) {
+
+		let path = await this.pathGenerator.generatePath(fromTable, toTable)
+
+		if (ignoreFirst) {
 			return _.tail(path)
 		}
 		return path
 	}
 }
 
-module.exports = DjinWorker
+module.exports = MySqlWorker
