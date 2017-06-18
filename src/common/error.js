@@ -9,6 +9,7 @@ class DjinError extends Error {
 	}
 }
 
+module.exports.MISSING_DATA = () => new DjinError('Missing data')
 module.exports.INVALID_JSON = () => new DjinError('Invalid JSON')
 module.exports.UNABLE_TO_CONNECT = () => new DjinError('Unable to connect to MySql server')
 module.exports.UNINITIALIZED_POOL = () => new DjinError('Connection Pool uninitialized')
