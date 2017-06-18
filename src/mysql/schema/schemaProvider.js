@@ -7,8 +7,8 @@ const QueryExecuter = require('../query/queryExecuter')
 const QueryProvider = require('../query/queryProvider')
 
 class SchemaProvider {
-	constructor(database) {
-		this.queryProvider = new QueryProvider(database)
+	constructor(databaseName) {
+		this.queryProvider = new QueryProvider(databaseName)
 		this.initializeData()
 	}
 

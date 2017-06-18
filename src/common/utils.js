@@ -86,6 +86,13 @@ class Utils {
 			})
 		})
 	}
+
+	static stringContainsAny(stringToCheck, strings) {
+		return _.some(strings, (string) => {
+			return stringToCheck.toLowerCase()
+				.includes(string.toLowerCase())
+		})
+	}
 }
 
 function getTimezoneHours() {

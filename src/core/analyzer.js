@@ -28,7 +28,8 @@ class Analyzer {
 			const keyValue = jsonTree[treeKey]
 			let selector = {
 				dataSource: treeKey,
-				parent: parentNode || null
+				parent: parentNode || null,
+				where: keyValue.where || null
 			}
 
 			if (keyValue instanceof String || typeof keyValue === 'string') {

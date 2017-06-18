@@ -11,7 +11,7 @@ class QueryProvider {
 	getDbSchemaLastModificationQuery(lastTableCreationDate, lastTableUpdateDate) {
 		let dbSchemaQuery = this.getDbSchemaQuery();
 		if (lastTableCreationDate && lastTableUpdateDate) {
-			dbSchemaQuery += ` AND (create_time > '${lastTableCreationDate}' OR update_time > '${lastTableUpdateDate}'`
+			dbSchemaQuery += ` AND (create_time > '${lastTableCreationDate}' OR update_time > '${lastTableUpdateDate}')`
 		} else if(lastTableCreationDate) {
 			dbSchemaQuery += ` AND create_time > '${lastTableCreationDate}'`
 		} else if(lastTableUpdateDate) {

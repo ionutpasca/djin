@@ -1,11 +1,14 @@
 'use strict'
 
 const _ = require('lodash')
-const Cache = require('../cache/cache')
+
 const Error = require('../common/error')
 const MySqlConnection = require('./connection')
 const SchemaProvider = require('./schema/schemaProvider')
 const PathGenerator = require('./path/pathGenerator')
+
+const QueryExecuter = require('./query/queryExecuter')
+const QueryBuilder = require('./query/queryBuilder')
 
 class MySqlWorker {
 	constructor(host, user, password, database) {
@@ -14,23 +17,53 @@ class MySqlWorker {
 		this.connectionPool = null
 		this.schemaProvider = null
 		this.pathGenerator = null
+		this.foreignKeys = null
 		this.schemaWasUpdatedOnRestart = false
 	}
 
 	async initialize() {
 		try {
 			this.connectionPool = await this.mySqlClient.createConnectionPool()
-			this.cachedData = await Cache.initialize()
 			this.schemaProvider = new SchemaProvider(this.mySqlClient.database)
 
 			const connection = await this.mySqlClient.getConnection()
 			this.schemaWasUpdatedOnRestart = await this.schemaProvider.syncDatabaseStructure(connection)
 
-			const foreignKeys = this.schemaProvider.getForeignKeys()
-			this.pathGenerator = new PathGenerator(foreignKeys)
+			this.foreignKeys = this.schemaProvider.getForeignKeys()
+			this.pathGenerator = new PathGenerator(this.foreignKeys)
 		} catch (error) {
 			throw error
 		}
+	}
+
+	async select(selectors) {
+		try {
+			const shortestPathsBetweenSelectors = await this.computeShortestPathsBetweenSelectors(selectors)
+			const query = QueryBuilder.generateQuery(selectors, shortestPathsBetweenSelectors, this.foreignKeys)
+
+			const options = {
+				nestTables: true,
+				sql: query
+			}
+			const connection = await this.mySqlClient.getConnection()
+			return await QueryExecuter.executeSimpleQuery(connection, options, false)
+		} catch (error) {
+			throw error
+		}
+	}
+
+	async computeShortestPathsBetweenSelectors(selectors) {
+		const selectorsWithParents = getSelectorsWithParents(selectors)
+		return await this.getSelectorsShortestPaths(selectorsWithParents)
+	}
+
+	async getSelectorsShortestPaths(selectors) {
+		const results = _.map(selectors, (selector) => {
+			return this.getShortestPathBetweenTables(selector.parent, selector.dataSource, true)
+		})
+
+		//MIGHT WANT TO MAKE IT SERIALLY
+		return Promise.all(results)
 	}
 
 	async getShortestPathBetweenTables(fromTable, toTable, ignoreFirst) {
@@ -40,11 +73,20 @@ class MySqlWorker {
 
 		let path = await this.pathGenerator.generatePath(fromTable, toTable)
 
-		if (ignoreFirst) {
-			return _.tail(path)
+		let result = {}
+		if (ignoreFirst && path.length > 1) {
+			result[`${fromTable}.${toTable}`] = _.tail(path)
+			return result
 		}
-		return path
+		result[`${fromTable}.${toTable}`] = path
+		return result
 	}
+}
+
+function getSelectorsWithParents(selectors) {
+	return _.filter(selectors, (selector) => {
+		return selector.parent
+	})
 }
 
 module.exports = MySqlWorker

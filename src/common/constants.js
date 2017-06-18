@@ -1,6 +1,7 @@
 'use strict'
 
 module.exports.KEYVALUES = ['select', 'where']
+module.exports.INVALID_MYSQL_COMMANDS = ['drop', 'truncate', 'update', 'create']
 module.exports.SELECTALL = '*'
 module.exports.DB_CREATION_TIME = 'create_time as creationTime'
 module.exports.DB_UPDATE_TIME = 'update_time as updateTime'
