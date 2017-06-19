@@ -29,10 +29,12 @@ class SchemaProvider {
 			await this.getStructureAndCache(connection)
 			return true
 		}
-		const dbModifications = await this.findLastDatabaseModification(connection)
+		const dbModifications = await this.findLastDatabaseModification(connection, true)
 		if (dbModifications.length) {
 			await this.getStructureAndCache(connection)
 			return true
+		} else {
+			connection.release()
 		}
 		return false
 	}
@@ -44,22 +46,22 @@ class SchemaProvider {
 			this.foreignKeys = dbStructure.foreignKeys
 
 			this.lastTableCreationDate = findLatestTableUpdateDate(this.schema, true)
-			this.lastTableUpdateDate = findLatestTableUpdateDate(this.schema)
+			this.lastTableUpdateDate = findLatestTableUpdateDate(this.schema, true)
 
 			Object.assign(dbStructure, {
 				lastTableCreationDate: this.lastTableCreationDate,
 				lastTableUpdateDate: this.lastTableUpdateDate
 			})
-			Cache.setObjects(dbStructure)
+			await Cache.setObjects(dbStructure)
 		} catch (err) {
 			throw err
 		}
 	}
 
-	async findLastDatabaseModification(connection) {
+	async findLastDatabaseModification(connection, maintainConnection) {
 		try {
 			const lastModifiedTablesQuery = await this.queryProvider.getDbSchemaLastModificationQuery(this.lastTableCreationDate, this.lastTableUpdateDate)
-			return await QueryExecuter.executeSimpleQuery(connection, lastModifiedTablesQuery)
+			return await QueryExecuter.executeSimpleQuery(connection, lastModifiedTablesQuery, maintainConnection)
 		} catch (error) {
 			throw error
 		}

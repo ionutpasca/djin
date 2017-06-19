@@ -46,9 +46,10 @@ class BFS {
 	findShortestPathBetweenTables(sourceTableName, targetTableName) {
 		const sourceTableId = getNodeIdByTableName(this.nodes, sourceTableName)
 		const targetTableId = getNodeIdByTableName(this.nodes, targetTableName)
-		const shortestPath = this.shortestPath(sourceTableId, targetTableId)
+		let shortestPath = this.shortestPath(sourceTableId, targetTableId)
 		
 		let shortestPathTables = []
+    shortestPath = [].concat(shortestPath)
 		shortestPath.forEach((node) => {
 			const nodeWithDetails = _.find(this.nodes, (n) => {
 				return n.id === node

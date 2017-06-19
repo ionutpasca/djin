@@ -22,7 +22,7 @@ class PathGenerator {
 		}
 
 		path = this.getOneToOneRelationship(path, fromTable, toTable)
-		if (!path.length) {
+		if (!path || !path.length) {
 			path = this.bfs.findShortestPathBetweenTables(fromTable, toTable)
 		}
 		if (path.length) {
