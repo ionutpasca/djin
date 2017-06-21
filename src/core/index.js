@@ -7,27 +7,27 @@ const Error = require('../common/error')
 const MySqlWorker = require('../mysql/worker');
 
 class Djin {
-	constructor(config) {
-		const host = config.host
-		const user = config.user
-		const password = config.password
-		const database = config.database
-		if(!host || !user || !password || !database) {
-			throw Error.MISSING_DATA
-		}
-		
-		this.mySqlWorker = new MySqlWorker(host, user, password, database)
-	}
+    constructor(config) {
+        const host = config.host
+        const user = config.user
+        const password = config.password
+        const database = config.database
+        if (!host || !user || !password || !database) {
+            throw Error.MISSING_DATA
+        }
 
-	async initialize() {
-		await Cache.initialize()
-		await this.mySqlWorker.initialize()
-	}
+        this.mySqlWorker = new MySqlWorker(host, user, password, database)
+    }
 
-	async select(jsonTree) {
-		const analyzer = new Analyzer(jsonTree)
-		const selectors = analyzer.getSelectors()
-		return await this.mySqlWorker.select(selectors);
-	}
+    async initialize() {
+        await Cache.initialize()
+        await this.mySqlWorker.initialize()
+    }
+
+    async select(jsonTree) {
+        const analyzer = new Analyzer(jsonTree)
+        const selectors = analyzer.getSelectors()
+        return await this.mySqlWorker.select(selectors);
+    }
 }
 module.exports = Djin

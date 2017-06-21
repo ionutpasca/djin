@@ -3,15 +3,15 @@
 const Error = require('../common/error');
 
 class ObjectsValidator {
-	constructor() { }
+    constructor() { }
 
-	static validateObjects(objectsToValidate) {
-		objectsToValidate.forEach((element) => {
-			if (typeof element !== 'object') {
-				throw Error.INVALID_CACHE_OBJECT
-			}
-		});
-	}
+    static validateObjects(objectsToValidate) {
+        objectsToValidate.forEach((element) => {
+            if (typeof element !== 'object') {
+                throw Error.INVALID_CACHE_OBJECT
+            }
+        });
+    }
 }
 
 module.exports = ObjectsValidator

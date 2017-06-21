@@ -5,108 +5,108 @@ const fs = require('fs')
 const moment = require('moment')
 
 class Utils {
-	constructor() { }
+    constructor() { }
 
-	static getSingleLineStrings(strings, ...values) {
-		let output = ''
-		const valuesLength = values.length
-		for (let i = 0; i < valuesLength; i++) {
-			output += strings[i] + values[i]
-		}
-		output += strings[valuesLength]
-		let lines = output.split(/(?:\r\n|\n|\r)/)
+    static getSingleLineStrings(strings, ...values) {
+        let output = ''
+        const valuesLength = values.length
+        for (let i = 0; i < valuesLength; i++) {
+            output += strings[i] + values[i]
+        }
+        output += strings[valuesLength]
+        let lines = output.split(/(?:\r\n|\n|\r)/)
 
-		return lines.map((line) => {
-			return line.replace(/^\s+/gm, '')
-		}).join(' ').trim()
-	}
+        return lines.map((line) => {
+            return line.replace(/^\s+/gm, '')
+        }).join(' ').trim()
+    }
 
-	// static *getObjectValues(object) {
-	// 	const objectKeys = Object.keys(obj)
-	// 	for (let prop of objectKeys) {
-	// 		yield obj[prop]
-	// 	}
-	// }
+    // static *getObjectValues(object) {
+    // 	const objectKeys = Object.keys(obj)
+    // 	for (let prop of objectKeys) {
+    // 		yield obj[prop]
+    // 	}
+    // }
 
-	static updateObjectPropsFromNewArray(objectToUpdate, objectsToAppend) {
-		objectsToAppend.forEach((object) => {
-			Object.keys(object).forEach((key) => {
-				objectToUpdate[key] = object[key]
-			})
-		})
-		return objectToUpdate
-	}
+    static updateObjectPropsFromNewArray(objectToUpdate, objectsToAppend) {
+        objectsToAppend.forEach((object) => {
+            Object.keys(object).forEach((key) => {
+                objectToUpdate[key] = object[key]
+            })
+        })
+        return objectToUpdate
+    }
 
-	static removeStringsFromArray(arrayOfStrings, stringsToRemove) {
-		let arrayCopy = _.clone(arrayOfStrings)
+    static removeStringsFromArray(arrayOfStrings, stringsToRemove) {
+        let arrayCopy = _.clone(arrayOfStrings)
 
-		_.remove(arrayCopy, stringFromArray => {
-			return stringsToRemove.includes(stringFromArray)
-		})
-		return arrayCopy
-	}
+        _.remove(arrayCopy, stringFromArray => {
+            return stringsToRemove.includes(stringFromArray)
+        })
+        return arrayCopy
+    }
 
-	static formatDateToCurrentTimezone(date) {
-		const currentTimezoneHours = getTimezoneHours()
-		const currentTimezoneMinutes = getTimezoneMinutes()
-		const newDate = new Date(date)
-		newDate.setHours(newDate.getHours() + currentTimezoneHours)
-		newDate.setMinutes(newDate.getMinutes() + currentTimezoneMinutes)
-		return newDate
-	}
+    static formatDateToCurrentTimezone(date) {
+        const currentTimezoneHours = getTimezoneHours()
+        const currentTimezoneMinutes = getTimezoneMinutes()
+        const newDate = new Date(date)
+        newDate.setHours(newDate.getHours() + currentTimezoneHours)
+        newDate.setMinutes(newDate.getMinutes() + currentTimezoneMinutes)
+        return newDate
+    }
 
-	static arrayContainsObject(arrayOfObjects, objectToFind) {
-		return _.find(arrayOfObjects, (object) => {
-			return Object.keys(objectToFind).forEach((key) => {
-				return objectToFind[key] === object[key]
-			})
-		})
-	}
+    static arrayContainsObject(arrayOfObjects, objectToFind) {
+        return _.find(arrayOfObjects, (object) => {
+            return Object.keys(objectToFind).forEach((key) => {
+                return objectToFind[key] === object[key]
+            })
+        })
+    }
 
-	static readFile(filePath) {
-		return new Promise((resolve, reject) => {
-			fs.readFile(filePath, 'utf8', (err, data) => {
-				if (err) {
-					reject(err)
-				} else {
-					resolve(data)
-				}
-			})
-		})
-	}
+    static readFile(filePath) {
+        return new Promise((resolve, reject) => {
+            fs.readFile(filePath, 'utf8', (err, data) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(data)
+                }
+            })
+        })
+    }
 
-	static writeFile(filePath, fileContent) {
-		return new Promise((resolve, reject) => {
-			fs.writeFile(filePath, fileContent, (err) => {
-				if (err) {
-					reject(err)
-				} else {
-					resolve(true)
-				}
-			})
-		})
-	}
+    static writeFile(filePath, fileContent) {
+        return new Promise((resolve, reject) => {
+            fs.writeFile(filePath, fileContent, (err) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(true)
+                }
+            })
+        })
+    }
 
-	static stringContainsAny(stringToCheck, strings) {
-		return _.some(strings, (string) => {
-			return stringToCheck.toLowerCase()
-				.includes(string.toLowerCase())
-		})
-	}
+    static stringContainsAny(stringToCheck, strings) {
+        return _.some(strings, (string) => {
+            return stringToCheck.toLowerCase()
+                .includes(string.toLowerCase())
+        })
+    }
 }
 
 function getTimezoneHours() {
-	const date = new Date()
-	const offset = -date.getTimezoneOffset()
-	const resultSign = offset >= 0 ? '+' : '-'
-	return parseInt(resultSign + parseInt(offset / 60))
+    const date = new Date()
+    const offset = -date.getTimezoneOffset()
+    const resultSign = offset >= 0 ? '+' : '-'
+    return parseInt(resultSign + parseInt(offset / 60))
 }
 
 function getTimezoneMinutes() {
-	const date = new Date();
-	const offset = -date.getTimezoneOffset()
-	const resultSign = offset >= 0 ? '+' : '-'
-	return parseInt(offset % 60)
+    const date = new Date();
+    const offset = -date.getTimezoneOffset()
+    const resultSign = offset >= 0 ? '+' : '-'
+    return parseInt(offset % 60)
 }
 
 module.exports = Utils;

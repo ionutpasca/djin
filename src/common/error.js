@@ -1,12 +1,12 @@
 'use strict'
 
 class DjinError extends Error {
-	constructor(message) {
-		super()
+    constructor(message) {
+        super()
 
-		this.message = `${message}`
-		this.stack = (new Error()).stack
-	}
+        this.message = `${message}`
+        this.stack = (new Error()).stack
+    }
 }
 
 module.exports.MISSING_DATA = () => new DjinError('Missing data')
