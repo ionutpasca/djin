@@ -107,7 +107,7 @@ const queryAsJson = {
 
 ### Select from multiple tables <b>(JOINS)</b>
 When using Djin, you don't have to think about making the jois between the tables manually, for it will figure out on
-its own, the path from a table to another (if it exists)
+its own, the path from a table to another (if it exists).
 Let's have an example...
 
 ```js
