@@ -154,7 +154,7 @@ const queryAsJson = {
   }
 }
 // In the current version, if you want to retreave data from multiple tables, the query must
-// mention a more specific query
+// be more specific... for now
 ```
 
 ### Many others will come...
