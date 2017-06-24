@@ -28,6 +28,10 @@ class Utils {
     // 	}
     // }
 
+    static trimSpacesFromString(stringToTrim) {
+        return stringToTrim.replace(/\s+/g, ' ')
+    }
+
     static updateObjectPropsFromNewArray(objectToUpdate, objectsToAppend) {
         objectsToAppend.forEach((object) => {
             Object.keys(object).forEach((key) => {

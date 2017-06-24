@@ -1,7 +1,11 @@
 {
   "name": "djin",
   "version": "1.0.4",
-  "description": "",
+  "description": "JSON based MySql query builder",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ovidiuionut94/djin.git"
+  },
   "main": "index.js",
   "scripts": {
     "test": ""

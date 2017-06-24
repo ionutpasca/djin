@@ -29,7 +29,11 @@ class Analyzer {
             let selector = {
                 dataSource: treeKey,
                 parent: parentNode || null,
-                where: keyValue.where || null
+                where: keyValue.where || null,
+                join: keyValue.join || false,
+                rightJoin: keyValue.rightJoin || keyValue.RightJoin || false,
+                leftJoin: keyValue.leftJoin || keyValue.LeftJoin || false,
+                innerJoin: keyValue.innerJoin || keyValue.innerJoin || false
             }
 
             if (keyValue instanceof String || typeof keyValue === 'string') {

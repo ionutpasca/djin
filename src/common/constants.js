@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports.KEYVALUES = ['select', 'where']
+module.exports.KEYVALUES = ['select', 'where', 'rightJoin', 'leftJoin', 'innerJoin', 'join']
 module.exports.INVALID_MYSQL_COMMANDS = ['drop', 'truncate', 'update', 'create']
 module.exports.SELECTALL = '*'
 module.exports.DB_CREATION_TIME = 'create_time as creationTime'
