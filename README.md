@@ -1,6 +1,6 @@
 # Info
-[![npm version](https://badge.fury.io/js/vanilla-tilt.svg)](https://badge.fury.io/js/vanilla-tilt)
-[![ghit.me](https://ghit.me/badge.svg?repo=micku7zu/vanilla-tilt.js)](https://ghit.me/repo/micku7zu/vanilla-tilt.js)
+
+[![ghit.me](https://ghit.me/badge.svg?repo=ovidiuionut94/djin)](https://ghit.me/repo/ovidiuionut94/djin)
 
 Magical MySql query builder that takes as input a json object and makes it blossom into real data
 
