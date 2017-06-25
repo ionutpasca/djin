@@ -16,16 +16,9 @@ class BFS {
 
     computeGraphNodes() {
         let nodes = []
-        let id = 0
         this.foreignKeys.forEach((key) => {
-            if (!tableNameExistsInNodes(nodes, key.from)) {
-                nodes.push({ id: id, tableName: key.from, tableColumn: key.from_column })
-                id += 1
-            }
-            if (!tableNameExistsInNodes(nodes, key.to)) {
-                nodes.push({ id: id, tableName: key.to, tableColumn: key.to_column })
-                id += 1
-            }
+            nodes = appendTableNode(nodes, key.from, key.from_column)
+            nodes = appendTableNode(nodes, key.to, key.to_column)
         })
         return nodes
     }
@@ -97,6 +90,13 @@ class BFS {
         }
         return null
     }
+}
+
+function appendTableNode(nodes, tableToAppend, tableColumn) {
+    if (!tableNameExistsInNodes(nodes, tableToAppend)) {
+        nodes.push({ id: nodes.length, tableName: tableToAppend, tableColumn: tableColumn })
+    }
+    return nodes
 }
 
 function getNodeIdByTableName(nodes, tableName) {
