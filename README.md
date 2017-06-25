@@ -1,5 +1,6 @@
 # Info
 
+[![HitCount](https://hitt.herokuapp.com/ovidiuionut94/djin.svg)](https://github.com/ovidiuionut94/djin)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/ovidiuionut94/djin/master/LICENSE) 
 [![NSP Status](https://nodesecurity.io/orgs/djin/projects/a1c8849c-bf3d-4cdc-9e6c-262e388ca165/badge)](https://nodesecurity.io/orgs/djin/projects/a1c8849c-bf3d-4cdc-9e6c-262e388ca165)
 [![Code Climate](https://codeclimate.com/github/ovidiuionut94/djin/badges/gpa.svg)](https://codeclimate.com/github/ovidiuionut94/djin)
