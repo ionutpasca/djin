@@ -25,9 +25,25 @@ class Djin {
     }
 
     async select(jsonTree) {
-        const analyzer = new Analyzer(jsonTree)
-        const selectors = analyzer.getSelectors()
-        return await this.mySqlWorker.select(selectors);
+        const selectTrees = computeSelectTrees(jsonTree)
+        let results = []
+        for (let selectTree of selectTrees) {
+            const analyzer = new Analyzer(selectTree)
+            const selectors = analyzer.getSelectors()
+            const localResult = await this.mySqlWorker.select(selectors)
+            results.push(localResult)
+        }
+        return results
     }
 }
+
+function computeSelectTrees(jsonTree) {
+    const baseSelectors = Object.keys(jsonTree)
+    return _.map(baseSelectors, (selector) => {
+        let result = {}
+        result[selector] = jsonTree[selector]
+        return result
+    })
+}
+
 module.exports = Djin
