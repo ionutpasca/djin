@@ -2,6 +2,8 @@
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/ovidiuionut94/djin/master/LICENSE)
 
+[![NSP Status](https://nodesecurity.io/orgs/djin/projects/a1c8849c-bf3d-4cdc-9e6c-262e388ca165/badge)](https://nodesecurity.io/orgs/djin/projects/a1c8849c-bf3d-4cdc-9e6c-262e388ca165)
+
 Magical MySql query builder that takes as input a json object and makes it blossom into real data
 
 # First steps
