@@ -11,6 +11,9 @@ class Analyzer {
         this.jsonTree = jsonTree
         this.selectors = []
         this.translateJson(jsonTree, null)
+
+        this.blueprint = {}
+        this.generateBlueprint(jsonTree)
     }
 
     validateJson(jsonToValidate) {
@@ -60,9 +63,40 @@ class Analyzer {
         })
     }
 
+    generateBlueprint() {
+        const mainEntities = getSelectorsWithoutParent(this.selectors)
+        mainEntities.forEach((entity) => {
+            this.blueprint[entity.dataSource] = {}
+        })
+
+        Object.keys(this.blueprint).forEach((key) => {
+            const children = findChildSelectors(this.selectors, key)
+            this.blueprint[key] = appendChildrenToParent(this.blueprint[key], children)
+        })
+    }
+
     getSelectors() {
         return this.selectors
     }
+}
+
+function getSelectorsWithoutParent(selectors) {
+    return _.filter(selectors, (selector) => {
+        return !selector.parent
+    })
+}
+
+function findChildSelectors(selectors, parent) {
+    return _.filter(selectors, (selector) => {
+        return selector.parent === parent
+    })
+}
+
+function appendChildrenToParent(parent, children) {
+    children.forEach((child) => {
+        parent[child.dataSource] = {}
+    })
+    return parent
 }
 
 module.exports = Analyzer
