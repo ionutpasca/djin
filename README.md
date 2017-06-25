@@ -1,6 +1,6 @@
 # Info
 
-[![ghit.me](https://ghit.me/badge.svg?repo=ovidiuionut94/djin)](https://ghit.me/repo/ovidiuionut94/djin)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/ovidiuionut94/djin/master/LICENSE)
 
 Magical MySql query builder that takes as input a json object and makes it blossom into real data
 
