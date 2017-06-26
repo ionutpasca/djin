@@ -28,6 +28,15 @@ class Utils {
     // 	}
     // }
 
+    static getObjectIndex(arrayOfObjects, objectToFind, excludeArrays) {
+        return _.findIndex(arrayOfObjects, (obj) => {
+            if (excludeArrays) {
+                obj = this.removeArraysFromObject(obj)
+            }
+            return _.isEqual(obj, objectToFind)
+        })
+    }
+
     static trimSpacesFromString(stringToTrim) {
         return stringToTrim.replace(/\s+/g, ' ')
     }
@@ -50,6 +59,16 @@ class Utils {
         return arrayCopy
     }
 
+    static removeArraysFromObject(object) {
+        let result = {}
+        Object.keys(object).forEach((key) => {
+            if (!_.isArray(object[key])) {
+                result[key] = object[key]
+            }
+        })
+        return result
+    }
+
     static formatDateToCurrentTimezone(date) {
         const currentTimezoneHours = getTimezoneHours()
         const currentTimezoneMinutes = getTimezoneMinutes()
@@ -61,9 +80,7 @@ class Utils {
 
     static arrayContainsObject(arrayOfObjects, objectToFind) {
         return _.find(arrayOfObjects, (object) => {
-            return Object.keys(objectToFind).forEach((key) => {
-                return objectToFind[key] === object[key]
-            })
+            return _.isEqual(objectToFind, object)
         })
     }
 

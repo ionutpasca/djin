@@ -4,7 +4,9 @@ const _ = require('lodash')
 const Analyzer = require('./analyzer')
 const Cache = require('../cache/cache')
 const Error = require('../common/error')
-const MySqlWorker = require('../mysql/worker');
+
+const ResultMapper = require('./mapper')
+const MySqlWorker = require('../mysql/worker')
 
 class Djin {
     constructor(config) {
@@ -31,7 +33,13 @@ class Djin {
             const analyzer = new Analyzer(selectTree)
             const selectors = analyzer.getSelectors()
             const localResult = await this.mySqlWorker.select(selectors)
-            results.push(localResult)
+
+            if (analyzer.beautifyResponse) {
+                const mappedResult = new ResultMapper(analyzer.getBlueprint(), localResult)
+                results.push(mappedResult.getResult())
+            } else {
+                results.push(localResult)
+            }
         }
         return results
     }

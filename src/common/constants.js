@@ -1,5 +1,6 @@
 'use strict'
 
+module.exports.BEAUTIFY = 'beautify'
 module.exports.KEYVALUES = ['select', 'where', 'rightJoin', 'leftJoin', 'innerJoin', 'join']
 module.exports.INVALID_MYSQL_COMMANDS = ['drop', 'truncate', 'update', 'create']
 module.exports.SELECTALL = '*'

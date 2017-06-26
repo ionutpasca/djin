@@ -9,7 +9,9 @@ class Analyzer {
     constructor(jsonTree) {
         this.validateJson(jsonTree)
         this.jsonTree = jsonTree
+
         this.selectors = []
+        this.beautifyResponse = false
         this.translateJson(jsonTree, null)
 
         this.blueprint = {}
@@ -29,6 +31,11 @@ class Analyzer {
     translateJson(jsonTree, parentNode) {
         Object.keys(jsonTree).forEach(treeKey => {
             const keyValue = jsonTree[treeKey]
+            if(treeKey.toLowerCase() === Constants.BEAUTIFY) {
+                this.beautifyResponse = keyValue
+                return
+            }
+
             let selector = {
                 dataSource: treeKey,
                 parent: parentNode || null,
@@ -73,6 +80,10 @@ class Analyzer {
             const children = findChildSelectors(this.selectors, key)
             this.blueprint[key] = appendChildrenToParent(this.blueprint[key], children)
         })
+    }
+
+    getBlueprint() {
+        return this.blueprint
     }
 
     getSelectors() {
