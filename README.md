@@ -23,7 +23,7 @@ const djin = new Djin({
   host: <database_server>
   user: <database_user>
   password: <database_password>
-  databse: <database_name>
+  database: <database_name>
 })
 
 ```
