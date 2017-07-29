@@ -41,7 +41,7 @@ class Djin {
             const selectors = analyzer.getSelectors()
             const localResult = await this.mySqlWorker.select(selectors)
 
-            var beautifiedRes = Beautifier.beautify(localResult, selectors[0].dataSource)
+            var beautifiedRes = Beautifier.beautify(localResult, Object.keys(analyzer.blueprint)[0])
             results.push(beautifiedRes)
         }
         return results
