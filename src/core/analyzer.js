@@ -11,7 +11,6 @@ class Analyzer {
         this.jsonTree = jsonTree
 
         this.selectors = []
-        this.beautifyResponse = false
         this.translateJson(jsonTree, null)
 
         this.blueprint = {}
@@ -31,10 +30,6 @@ class Analyzer {
     translateJson(jsonTree, parentNode) {
         Object.keys(jsonTree).forEach(treeKey => {
             const keyValue = jsonTree[treeKey]
-            if(treeKey.toLowerCase() === Constants.BEAUTIFY) {
-                this.beautifyResponse = keyValue
-                return
-            }
 
             let selector = {
                 dataSource: treeKey,

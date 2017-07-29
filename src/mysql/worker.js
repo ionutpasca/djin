@@ -36,15 +36,22 @@ class MySqlWorker {
         }
     }
 
+    async execRaw(rawQuery) {
+        try {
+            const options = { nestTables: true, sql: rawQuery }
+            const connection = await this.mySqlClient.getConnection()
+            return await QueryExecuter.executeSimpleQuery(connection, options, false)
+        } catch (error) {
+            throw error
+        }
+    }
+
     async select(selectors) {
         try {
             const shortestPathsBetweenSelectors = await this.computeShortestPathsBetweenSelectors(selectors)
             const query = QueryBuilder.generateQuery(selectors, shortestPathsBetweenSelectors, this.foreignKeys)
 
-            const options = {
-                nestTables: true,
-                sql: query
-            }
+            const options = { nestTables: true, sql: query }
             const connection = await this.mySqlClient.getConnection()
             return await QueryExecuter.executeSimpleQuery(connection, options, false)
         } catch (error) {

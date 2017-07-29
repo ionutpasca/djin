@@ -2,10 +2,9 @@
 
 const _ = require('lodash')
 const Analyzer = require('./analyzer')
+const Beautifier = require('nested-beautifier')
 const Cache = require('../cache/cache')
 const Error = require('../common/error')
-
-const ResultMapper = require('./mapper')
 const MySqlWorker = require('../mysql/worker')
 
 class Djin {
@@ -26,6 +25,14 @@ class Djin {
         await this.mySqlWorker.initialize()
     }
 
+    async execRaw(rawQuery) {
+        try {
+            return this.mySqlWorker.execRaw(rawQuery)
+        } catch (error) {
+            throw error
+        }
+    }
+
     async select(jsonTree) {
         const selectTrees = computeSelectTrees(jsonTree)
         let results = []
@@ -34,12 +41,8 @@ class Djin {
             const selectors = analyzer.getSelectors()
             const localResult = await this.mySqlWorker.select(selectors)
 
-            if (analyzer.beautifyResponse) {
-                const mappedResult = new ResultMapper(analyzer.getBlueprint(), localResult)
-                results.push(mappedResult.getResult())
-            } else {
-                results.push(localResult)
-            }
+            var beautifiedRes = Beautifier.beautify(localResult, 'users')
+            results.push(beautifiedRes)
         }
         return results
     }
