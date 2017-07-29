@@ -42,7 +42,9 @@ class Djin {
             const localResult = await this.mySqlWorker.select(selectors)
 
             var beautifiedRes = Beautifier.beautify(localResult, Object.keys(analyzer.blueprint)[0])
-            results.push(beautifiedRes)
+            var resultValues = _.map(beautifiedRes, Object.keys(analyzer.blueprint)[0])
+
+            results.push({ [Object.keys(analyzer.blueprint)[0]]: resultValues })
         }
         if (selectTrees.length === 1) {
             return results[0]
