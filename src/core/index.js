@@ -44,6 +44,9 @@ class Djin {
             var beautifiedRes = Beautifier.beautify(localResult, Object.keys(analyzer.blueprint)[0])
             results.push(beautifiedRes)
         }
+        if (selectTrees.length === 1) {
+            return results[0]
+        }
         return results
     }
 }
