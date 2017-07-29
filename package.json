@@ -1,6 +1,6 @@
 {
   "name": "djin",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "JSON based MySql query builder",
   "repository": {
     "type": "git",
