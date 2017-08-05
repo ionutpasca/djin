@@ -19,3 +19,6 @@ module.exports.CACHE_KEY_CANNOT_BE_NULL = () => new DjinError('Key to be stored 
 module.exports.INVALID_CACHE_OBJECT = () => new DjinError('Invalid object for caching')
 module.exports.CANNOT_READ_CACHE_FILE = () => new DjinError('Cannot read from cache file. Check file existance and permissions')
 module.exports.CANNOT_WRITE_CACHE_FILE = () => new DjinError('Cannot write into cache file. Check file existance and permissions')
+
+module.exports.OBJECT_APPENDED_TO_QUERY = () => new DjinError('Object was already appended to query')
+module.exports.VALUES_APPENDED_TO_QUERY = () => new DjinError('Values were already appended to query')

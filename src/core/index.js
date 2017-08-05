@@ -36,7 +36,7 @@ class Djin {
     async select(jsonTree) {
         const selectTrees = computeSelectTrees(jsonTree)
         let results = []
-        for (let selectTree of selectTrees) {
+        for (const selectTree of selectTrees) {
             const analyzer = new Analyzer(selectTree)
             const selectors = analyzer.getSelectors()
             const localResult = await this.mySqlWorker.select(selectors)
@@ -50,6 +50,15 @@ class Djin {
             return results[0]
         }
         return results
+    }
+
+    async insert(jsonObjects) {
+        const objectsToInsert = computeSelectTrees(jsonObjects)
+        try {
+            return await this.mySqlWorker.insert(jsonObjects)
+        } catch (error) {
+            throw error
+        }
     }
 }
 

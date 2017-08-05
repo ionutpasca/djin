@@ -1,7 +1,7 @@
 'use strict'
 
 const _ = require('lodash')
-const QueryUtils = require('./queryUtils')
+const QueryUtils = require('../queryUtils')
 
 const Join = require('../../models/joins/join')
 const InnerJoin = require('../../models/joins/innerJoin')

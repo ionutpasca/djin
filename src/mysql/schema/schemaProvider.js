@@ -3,8 +3,8 @@
 const _ = require('lodash')
 const Cache = require('../../cache/cache')
 const Utils = require('../../common/utils')
-const QueryExecuter = require('../query/queryExecuter')
-const QueryProvider = require('../query/queryProvider')
+const QueryExecuter = require('../queryExecuter')
+const QueryProvider = require('../get/queryProvider')
 
 class SchemaProvider {
     constructor(databaseName) {
@@ -15,12 +15,17 @@ class SchemaProvider {
     initializeData() {
         this.schema = Cache.get('databaseSchema')
         this.foreignKeys = Cache.get('foreignKeys')
+        this.tablesSchema = Cache.get('tablesStructure')
         this.lastTableCreationDate = Cache.get('lastTableCreationDate')
         this.lastTableUpdateDate = Cache.get('lastTableUpdateDate')
     }
 
     getForeignKeys() {
         return this.foreignKeys
+    }
+
+    getTablesSchema() {
+        return this.tablesSchema
     }
 
     async syncDatabaseStructure(connection) {
@@ -44,6 +49,7 @@ class SchemaProvider {
             const dbStructure = await this.getDatabaseStructure(connection)
             this.schema = dbStructure.databaseSchema
             this.foreignKeys = dbStructure.foreignKeys
+            this.tablesSchema = dbStructure.tablesStructure
 
             this.lastTableCreationDate = findLatestTableUpdateDate(this.schema, true)
             this.lastTableUpdateDate = findLatestTableUpdateDate(this.schema, true)
@@ -70,8 +76,15 @@ class SchemaProvider {
     async getDatabaseStructure(connection) {
         try {
             const dbSchema = await this.getDatabaseSchema(connection, true)
-            const dbForeignKeys = await this.getDatabaseForeignKeys(connection)
-            return { databaseSchema: dbSchema, foreignKeys: dbForeignKeys };
+            const dbForeignKeys = await this.getDatabaseForeignKeys(connection, true)
+            let tablesColumns = await this.getDatabaseTablesColumns(connection)
+            tablesColumns = treeifyTableColumns(tablesColumns)
+
+            return {
+                databaseSchema: dbSchema,
+                foreignKeys: dbForeignKeys,
+                tablesStructure: tablesColumns
+            };
         } catch (error) {
             throw error
         }
@@ -94,6 +107,15 @@ class SchemaProvider {
             throw error
         }
     }
+
+    async getDatabaseTablesColumns(connection, maintainConnection) {
+        try {
+            const dbTablesColumnsQuery = this.queryProvider.getTablesColumnsQuery()
+            return await QueryExecuter.executeSimpleQuery(connection, dbTablesColumnsQuery, maintainConnection)
+        } catch (error) {
+            throw error
+        }
+    }
 }
 
 function findLatestTableUpdateDate(dbSchema, afterCreationDate) {
@@ -101,6 +123,19 @@ function findLatestTableUpdateDate(dbSchema, afterCreationDate) {
     const sortedTables = _.sortBy(dbSchema, query)
     const latestCreatedTableTime = _.last(sortedTables).creationTime
     return Utils.formatDateToCurrentTimezone(latestCreatedTableTime)
+}
+
+function treeifyTableColumns(tablesColumns) {
+    let result = {}
+    _.forEach(tablesColumns, (tableColumn) => {
+        const tableName = tableColumn.table
+        if (result[tableName] && result[tableName].columns) {
+            result[tableName].columns.push(tableColumn.column)
+        } else {
+            result[tableName] = { columns: [tableColumn.column] }
+        }
+    })
+    return result
 }
 
 module.exports = SchemaProvider

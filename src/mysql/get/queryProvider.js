@@ -37,6 +37,13 @@ class QueryProvider {
 				WHERE referenced_table_name IS NOT NULL
 				AND table_schema = '${this.databaseName}'`
     }
+
+    getTablesColumnsQuery() {
+        const columns = `table_name as 'table', column_name as 'column'`
+        return Utils.getSingleLineStrings`SELECT ${columns}
+            FROM ${Constants.DB_INFORMATION_SCHEMA_COLUMNS}
+            WHERE table_schema = '${this.databaseName}'`
+    }
 }
 
 module.exports = QueryProvider
