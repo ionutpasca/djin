@@ -162,5 +162,31 @@ const queryAsJson = {
 // be more specific... for now
 ```
 
+### Inserts
+Just like when you're making a select, you can easily insert data into your database, using a json object
+
+```js
+const roleToInsert = {
+    roles: {
+        name: 'New Role Name'
+    }
+}
+const insertedRole = await djin.insert(roleToInsert)
+```
+
+Multiple inserts at once >>>
+```js
+const dataToInsert = {
+    roles: {
+        name: 'New Role Name'
+    },
+    messages: {
+        message: 'New message',
+        user_id: 1
+    }
+}
+const insertResult = await djin.insert(dataToInsert)
+```
+
 ### Many others will come...
 
