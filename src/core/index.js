@@ -55,7 +55,8 @@ class Djin {
     async insert(jsonObjects) {
         const objectsToInsert = computeTrees(jsonObjects)
         try {
-            return await this.mySqlWorker.insert(objectsToInsert)
+            const result = await this.mySqlWorker.insert(objectsToInsert)
+            return _.flatten(result)
         } catch (error) {
             throw error
         }

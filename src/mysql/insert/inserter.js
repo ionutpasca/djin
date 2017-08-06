@@ -46,7 +46,7 @@ async function insertValues(connection, objectToInsert, sourceTable, tableColumn
     insertArgs.appendValues(objectToInsert)
     const query = insertQuery.getQuery()
 
-    return await QueryExecuter.executeSimpleQuery(connection, query)
+    return await QueryExecuter.executeSimpleQuery(connection, query, true)
 }
 
 function canUseValuesInsert(objectToInsert, sourceTable, tableColumns) {
@@ -83,7 +83,7 @@ function mustUseTransaction(objectToInsert, tablesStructure) {
 
 async function makeTransactionalInsert(connection, objectToInsert, sourceTable, tablesStructure) {
     const transactionalInserter = new TransactionalInserter(this.connection)
-    
+
     throw Error.NOT_IMPLEMENTED
 }
 
@@ -100,7 +100,7 @@ async function makeSimpleInsert(connection, objectToInsert, sourceTable, sourceT
     const selectBase = new SelectBase({ select: '*', dataSource: sourceTable })
     const selectQuery = `${selectBase.getSelectBase()} WHERE ${sourceTablePKey} = `
 
-    return await QueryExecuter.executeQuery(connection, query, objectToInsert[sourceTable])
+    return await QueryExecuter.createOrUpdate(connection, query, selectQuery, objectToInsert[sourceTable], true)
 }
 
 function findTablePrimaryKeyColumn(sourceTable, tablesStructure) {

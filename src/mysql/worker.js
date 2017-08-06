@@ -70,6 +70,7 @@ class MySqlWorker {
                 results.push(res)
                 resultsLen += 1
                 if (resultsLen === objectsToInsert.length) {
+                    connection.release()
                     return results
                 }
             }
