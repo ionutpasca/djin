@@ -23,7 +23,7 @@ class InsertQuery {
 
     appendValues(objectsToInsert) {
         if (this.objectAppended) {
-            return Error.OBJECT_APPENDED_TO_QUERY
+            throw Error.OBJECT_APPENDED_TO_QUERY
         }
 
         const valuesToAppend = _.map(objectsToInsert, (objToInsert) => {
@@ -36,11 +36,15 @@ class InsertQuery {
 
     appendObject(objectToInsert) {
         if (this.valuesAppended) {
-            return Error.VALUES_APPENDED_TO_QUERY
+            throw Error.VALUES_APPENDED_TO_QUERY
         }
 
         this.insert += objectToInsert
         this.objectAppended = true
+    }
+
+    getQuery() {
+        return this.insert
     }
 }
 

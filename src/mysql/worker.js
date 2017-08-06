@@ -59,12 +59,20 @@ class MySqlWorker {
             objectsToInsert = [].concat(objectsToInsert);
             const tablesSchema = this.schemaProvider.getTablesSchema()
             let results = []
+
             const connection = await this.mySqlClient.getConnection()
+            const inserter = new Inserter(connection)
+
+            var resultsLen = 0
             for (const objectToInsert of objectsToInsert) {
-                const res = await Inserter.insert(connection, objectToInsert, tablesSchema)
+                const sourceTable = Object.keys(objectToInsert)[0]
+                const res = await inserter.insert(objectToInsert, sourceTable, tablesSchema)
                 results.push(res)
+                resultsLen += 1
+                if (resultsLen === objectsToInsert.length) {
+                    return results
+                }
             }
-            return results
         } catch (error) {
             throw error
         }

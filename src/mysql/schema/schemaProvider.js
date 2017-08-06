@@ -129,13 +129,24 @@ function treeifyTableColumns(tablesColumns) {
     let result = {}
     _.forEach(tablesColumns, (tableColumn) => {
         const tableName = tableColumn.table
+
         if (result[tableName] && result[tableName].columns) {
-            result[tableName].columns.push(tableColumn.column)
+            const column = generateColumnObj(tableColumn)
+            result[tableName].columns.push(column)
         } else {
-            result[tableName] = { columns: [tableColumn.column] }
+            const column = generateColumnObj(tableColumn)
+            result[tableName] = { columns: [column] }
         }
     })
     return result
+}
+
+function generateColumnObj(tableColumnData) {
+    return {
+        column: tableColumnData.column,
+        key: tableColumnData.key,
+        extra: tableColumnData.extra
+    }
 }
 
 module.exports = SchemaProvider

@@ -9,6 +9,8 @@ class DjinError extends Error {
     }
 }
 
+module.exports.NOT_IMPLEMENTED = () => new DjinError('Not implemented')
+
 module.exports.MISSING_DATA = () => new DjinError('Missing data')
 module.exports.INVALID_JSON = () => new DjinError('Invalid JSON')
 module.exports.UNABLE_TO_CONNECT = () => new DjinError('Unable to connect to MySql server')

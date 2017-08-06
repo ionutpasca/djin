@@ -34,7 +34,7 @@ class Djin {
     }
 
     async select(jsonTree) {
-        const selectTrees = computeSelectTrees(jsonTree)
+        const selectTrees = computeTrees(jsonTree)
         let results = []
         for (const selectTree of selectTrees) {
             const analyzer = new Analyzer(selectTree)
@@ -53,16 +53,16 @@ class Djin {
     }
 
     async insert(jsonObjects) {
-        const objectsToInsert = computeSelectTrees(jsonObjects)
+        const objectsToInsert = computeTrees(jsonObjects)
         try {
-            return await this.mySqlWorker.insert(jsonObjects)
+            return await this.mySqlWorker.insert(objectsToInsert)
         } catch (error) {
             throw error
         }
     }
 }
 
-function computeSelectTrees(jsonTree) {
+function computeTrees(jsonTree) {
     const baseSelectors = Object.keys(jsonTree)
     return _.map(baseSelectors, (selector) => {
         let result = {}

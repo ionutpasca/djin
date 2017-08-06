@@ -39,7 +39,7 @@ class QueryProvider {
     }
 
     getTablesColumnsQuery() {
-        const columns = `table_name as 'table', column_name as 'column'`
+        const columns = `table_name as 'table', column_name as 'column', column_key as 'key', extra as 'extra'`
         return Utils.getSingleLineStrings`SELECT ${columns}
             FROM ${Constants.DB_INFORMATION_SCHEMA_COLUMNS}
             WHERE table_schema = '${this.databaseName}'`
