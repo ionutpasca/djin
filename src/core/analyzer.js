@@ -38,7 +38,7 @@ class Analyzer {
                 join: keyValue.join || false,
                 rightJoin: keyValue.rightJoin || keyValue.RightJoin || false,
                 leftJoin: keyValue.leftJoin || keyValue.LeftJoin || false,
-                innerJoin: keyValue.innerJoin || keyValue.innerJoin || false
+                innerJoin: keyValue.innerJoin || keyValue.InnerJoin || false
             }
 
             if (keyValue instanceof String || typeof keyValue === 'string') {
