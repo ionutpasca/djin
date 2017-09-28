@@ -2,7 +2,6 @@
 
 const _ = require('lodash')
 const fs = require('fs')
-const moment = require('moment')
 
 class Utils {
     constructor() { }
