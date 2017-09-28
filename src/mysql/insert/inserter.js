@@ -80,8 +80,6 @@ function mustUseTransaction(objectToInsert, tablesStructure) {
 }
 
 async function makeTransactionalInsert(connection, objectToInsert, sourceTable, tablesStructure) {
-    const transactionalInserter = new TransactionalInserter(this.connection)
-
     throw Error.NOT_IMPLEMENTED
 }
 
