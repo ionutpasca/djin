@@ -17,7 +17,7 @@ class SelectBase {
         let baseQuery = splittedQuery[0]
 
         selectors.forEach((selector) => {
-            baseQuery = applySelectKeysToQuery(baseQuery, selector.select, selector.dataSource, selector.parent)
+            baseQuery = applySelectKeysToQuery(baseQuery, selector.select, selector.dataSource)
         })
 
         for (let i = 1; i < splittedQuery.length; i++) {
