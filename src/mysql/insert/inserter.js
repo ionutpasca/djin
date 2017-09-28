@@ -4,7 +4,6 @@ const Error = require('../../common/error')
 const InsertQuery = require('../../models/query/insertQuery')
 const SelectBase = require('../../models/query/selectBase')
 
-const TransactionalInserter = require('./transactionalInserter')
 const QueryExecuter = require('../queryExecuter')
 
 const PK_IDENTIFIER = 'pri'
