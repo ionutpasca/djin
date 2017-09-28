@@ -96,7 +96,6 @@ async function makeSimpleInsert(connection, objectToInsert, sourceTable, sourceT
     let query = insertQuery.getQuery()
     query = `${query} ?;`
 
-    const selectArgs = {}
     const selectBase = new SelectBase({ select: '*', dataSource: sourceTable })
     const selectQuery = `${selectBase.getSelectBase()} WHERE ${sourceTablePKey} = `
 
