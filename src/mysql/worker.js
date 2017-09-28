@@ -2,7 +2,6 @@
 
 const _ = require('lodash')
 
-const Error = require('../common/error')
 const MySqlConnection = require('./connection')
 const SchemaProvider = require('./schema/schemaProvider')
 const QueryExecuter = require('./queryExecuter')
