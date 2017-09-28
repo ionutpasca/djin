@@ -1,7 +1,5 @@
 'use strict'
 
-const _ = require('lodash')
-
 const MySqlConnection = require('./connection')
 const SchemaProvider = require('./schema/schemaProvider')
 const QueryExecuter = require('./queryExecuter')
