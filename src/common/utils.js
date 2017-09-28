@@ -126,7 +126,6 @@ function getTimezoneHours() {
 function getTimezoneMinutes() {
     const date = new Date();
     const offset = -date.getTimezoneOffset()
-    const resultSign = offset >= 0 ? '+' : '-'
     return parseInt(offset % 60)
 }
 
