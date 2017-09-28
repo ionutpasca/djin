@@ -1,7 +1,6 @@
 'use strict'
 
 const _ = require('lodash')
-const Utils = require('../../common/utils')
 
 class SelectBase {
     constructor(parentSelector) {
