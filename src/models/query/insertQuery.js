@@ -2,7 +2,6 @@
 
 const _ = require('lodash')
 const Error = require('../../common/error')
-const Utils = require('../../common/utils')
 
 class InsertQuery {
     constructor(queryDetails) {
